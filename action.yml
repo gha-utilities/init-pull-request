@@ -1,0 +1,34 @@
+name: 'Initialize Pull Request'
+description: 'JavaScript wrapper for GitHub Actions, runs `octokit.pulls.create` with provided Inputs'
+
+
+inputs:
+  pull_request_token:
+    description: 'Secret authentication token with permissions to initialize Pull Requests for repository'
+    required: true
+
+  head:
+    description: 'Where changes are implemented, eg. `your-name:feature-branch`'
+    required: true
+
+  base:
+    description: 'Branch name where changes should be incorporated, eg. `master`'
+    required: true
+
+  title:
+    description: 'Commit title, generally should be less than 74 characters'
+    required: true
+
+  body:
+    description: 'Multi-line commit message describing changes'
+    required: true
+
+
+runs:
+  using: 'node12'
+  main: 'index.js'
+
+
+# branding:
+#   icon: layout
+#   color: black
