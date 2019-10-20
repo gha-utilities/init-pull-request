@@ -29,6 +29,6 @@ runs:
   main: 'index.js'
 
 
-# branding:
-#   icon: layout
-#   color: black
+branding:
+  icon: git-pull-request
+  color: black
