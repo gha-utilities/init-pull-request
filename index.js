@@ -2,6 +2,7 @@
 
 
 const github = require('@actions/github');
+const process = require('process');
 
 
 const get_gha_input = (name) => { process.env[`INPUT_${name.toUpperCase()}`]; }
@@ -19,7 +20,7 @@ if (actor === undefined || repository === undefined) {
     '',
     '... hint if errors about undefined Inputs then pop, try...',
     '  GITHUB_ACTOR=your-name\\',
-    '  INPUT_PULL_REQUEST_TOKEN=...\\'
+    '  INPUT_PULL_REQUEST_TOKEN=...\\',
     '  node index.js',
   ];
 
@@ -27,7 +28,11 @@ if (actor === undefined || repository === undefined) {
 }
 
 
-const gha_example__base = [
+const error_message__base = [
+  'Please check that your Workflow file looks similar to...',
+];
+
+const gha_example = [
   '  - name: Initialize Pull Request',
   '    uses: gha-utilities/init-pull-request',
   '    with:',
@@ -60,44 +65,32 @@ const required_inputs__public = [
     gha_example: [
       '      body: >',
       '        Some thing can now be done that could',
-      '        not be done before.'
+      '        not be done before.',
     ],
   },
 ];
 
 
-let error_message__base = [
-  'Please check that your Workflow file looks similar to...',
-  ...gha_example__base
-];
-
-
 required_inputs__private.forEach((obj) => {
-  if (get_gha_input(obj.gha_input) === undefined) {
-    const error_message = [
-      `Required Input \`${obj.gha_input}\` for GitHub Action was undefined`,
-      ...error_message__base,
-      ...obj.gha_example
-    ];
+  gha_example.push(...obj.gha_example);
 
-    throw new ReferenceError(error_message.join('\n'));
-  } else {
-    error_message__base = error_message__base.concat(obj.gha_example);
+  if (get_gha_input(obj.gha_input) === undefined) {
+    throw new ReferenceError([`Required Input \`${obj.gha_input}\` for GitHub Action was undefined`,
+                              ...error_message__base,
+                              ...gha_example,
+    ].join('\n'));
   }
 });
 
 
 required_inputs__public.forEach((obj) => {
-  if (get_gha_input(obj.gha_input) === undefined) {
-    const error_message = [
-      `Required Input \`${obj.gha_input}\` for GitHub Action was undefined`,
-      ...error_message__base,
-      ...obj.gha_example
-    ];
+  gha_example.push(...obj.gha_example);
 
-    throw new ReferenceError(error_message.join('\n'));
-  } else {
-    error_message__base = error_message__base.concat(obj.gha_example);
+  if (get_gha_input(obj.gha_input) === undefined) {
+    throw new ReferenceError([`Required Input \`${obj.gha_input}\` for GitHub Action was undefined`,
+                              ...error_message__base,
+                              ...gha_example,
+    ].join('\n'));
   }
 });
 
@@ -106,7 +99,10 @@ let octokit;
 try {
   octokit = new github.GitHub(get_gha_input('pull_request_token'));
 } catch (e) {
-  throw new Error('Cannot authenticate to GitHub rest API');
+  throw new Error(['Cannot authenticate to GitHub rest API',
+                   ...error_message__base,
+                   ...gha_example,
+  ].join('\n'));
 }
 
 
@@ -129,11 +125,17 @@ try {
     'draft': false,                 // If `true` no notifications would be generated
   });
 } catch (e) {
-  console.log('Error initializing Pull Request');
+  throw new Error(['Error initializing Pull Request',
+                   ...error_message__base,
+                   ...gha_example,
+  ].join('\n'));
 }
 
 if (response) {
   console.table(response);
 } else {
-  console.log('Failed to initialize Pull Request');
+  throw new Error(['Failed to initialize Pull Request',
+                   ...error_message__base,
+                   ...gha_example,
+  ].join('\n'));
 }
