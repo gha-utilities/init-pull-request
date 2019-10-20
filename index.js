@@ -5,7 +5,7 @@ const github = require('@actions/github');
 const process = require('process');
 
 
-const get_gha_input = (name) => { process.env[`INPUT_${name.toUpperCase()}`]; }
+const get_gha_input = function(name) { return process.env[`INPUT_${name.toUpperCase()}`]; }
 
 
 const actor = process.env.GITHUB_ACTOR;
@@ -75,10 +75,12 @@ required_inputs__private.forEach((obj) => {
   gha_example.push(...obj.gha_example);
 
   if (get_gha_input(obj.gha_input) === undefined) {
-    throw new ReferenceError([`Required Input \`${obj.gha_input}\` for GitHub Action was undefined`,
-                              ...error_message__base,
-                              ...gha_example,
-    ].join('\n'));
+    const error_message = [`Required Input \`${obj.gha_input}\` for GitHub Action was undefined`,
+                           ...error_message__base,
+                           ...gha_example,
+    ];
+
+    throw new ReferenceError(error_message.join('\n'));
   }
 });
 
@@ -87,10 +89,12 @@ required_inputs__public.forEach((obj) => {
   gha_example.push(...obj.gha_example);
 
   if (get_gha_input(obj.gha_input) === undefined) {
-    throw new ReferenceError([`Required Input \`${obj.gha_input}\` for GitHub Action was undefined`,
-                              ...error_message__base,
-                              ...gha_example,
-    ].join('\n'));
+    const error_message = [`Required Input \`${obj.gha_input}\` for GitHub Action was undefined`,
+                     ...error_message__base,
+                     ...gha_example,
+    ];
+
+    throw new ReferenceError(error_message.join('\n'));
   }
 });
 
@@ -99,10 +103,12 @@ let octokit;
 try {
   octokit = new github.GitHub(get_gha_input('pull_request_token'));
 } catch (e) {
-  throw new Error(['Cannot authenticate to GitHub rest API',
-                   ...error_message__base,
-                   ...gha_example,
-  ].join('\n'));
+  const error_message = ['Cannot authenticate to GitHub rest API',
+                         ...error_message__base,
+                         ...gha_example,
+  ];
+
+  throw new Error(error_message.join('\n'));
 }
 
 
@@ -125,17 +131,21 @@ try {
     'draft': false,                 // If `true` no notifications would be generated
   });
 } catch (e) {
-  throw new Error(['Error initializing Pull Request',
-                   ...error_message__base,
-                   ...gha_example,
-  ].join('\n'));
+  const error_message = ['Error initializing Pull Request',
+                         ...error_message__base,
+                         ...gha_example,
+  ];
+
+  throw new Error(error_message.join('\n'));
 }
 
 if (response) {
   console.table(response);
 } else {
-  throw new Error(['Failed to initialize Pull Request',
-                   ...error_message__base,
-                   ...gha_example,
-  ].join('\n'));
+  const error_message = ['Failed to initialize Pull Request',
+                         ...error_message__base,
+                         ...gha_example,
+  ];
+
+  throw new Error(error_message.join('\n'));
 }
