@@ -109,7 +109,7 @@ jobs:
       - name: Initialize Pull Request
         uses: gha-utilities/init-pull-request@v0.0.1
         with:
-          pull_request_token: ${{ secrets.PULL_REQUEST_TOKEN }}
+          pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: pr-pages
           base: gh-pages
           title: 'Updates site files from latest Actions build'
@@ -117,9 +117,6 @@ jobs:
             Perhaps a multi-line description
             about latest features and such.
 ```
-
-
-The pull request [token](https://github.com/settings/tokens/new) should have `public_repo` permissions and be assigned within your project's Secrets Settings, eg. `https://github.com/<maintainer>/<repository>/settings/secrets`
 
 
 ___
@@ -147,7 +144,7 @@ According to OctoKit documentation for [`octokit.pulls.create`](https://octokit.
       - name: Initialize Pull Request
         uses: gha-utilities/init-pull-request@v0.0.1
         with:
-          pull_request_token: ${{ secrets.PULL_REQUEST_TOKEN }}
+          pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: 'your-name:pr-pages'
           base: gh-pages
           title: 'Updates site files from latest Actions build'
@@ -169,7 +166,7 @@ To assign a different repository modify the `GITHUB_REPOSITORY` environment vari
         env:
           GITHUB_REPOSITORY: maintainer/repo-name
         with:
-          pull_request_token: ${{ secrets.PULL_REQUEST_TOKEN }}
+          pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: your-name:pr-pages
           base: gh-pages
           title: 'Updates site files from latest Actions build'
