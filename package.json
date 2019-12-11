@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/gha-utilities/init-pull-request#readme",
   "dependencies": {
-    "@actions/github": "^1.1.0"
+    "@actions/github": "^2.0.0"
   }
 }
