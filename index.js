@@ -20,7 +20,7 @@ if (actor === undefined || repo === undefined) {
     '',
     '... hint if errors about undefined Inputs then pop, try...',
     '  GITHUB_ACTOR=your-name\\',
-    '  GITHUB_REPOSITORY=fancy-project\\',
+    '  GITHUB_REPOSITORY=owner/fancy-project\\',
     '  INPUT_PULL_REQUEST_TOKEN=...\\',
     '  node index.js',
   ];
@@ -91,8 +91,8 @@ required_inputs__public.forEach((obj) => {
 
   if (get_gha_input(obj.gha_input) === undefined) {
     const error_message = [`Required Input \`${obj.gha_input}\` for GitHub Action was undefined`,
-                     ...error_message__base,
-                     ...gha_example,
+                           ...error_message__base,
+                           ...gha_example,
     ];
 
     throw new ReferenceError(error_message.join('\n'));
@@ -100,17 +100,7 @@ required_inputs__public.forEach((obj) => {
 });
 
 
-let octokit;
-try {
-  octokit = new github.GitHub(get_gha_input('pull_request_token'));
-} catch (e) {
-  const error_message = ['Cannot authenticate to GitHub rest API',
-                         ...error_message__base,
-                         ...gha_example,
-  ];
-
-  throw new Error(error_message.join('\n'));
-}
+const octokit = new github.GitHub(get_gha_input('pull_request_token'));
 
 
 const head = get_gha_input('head');
