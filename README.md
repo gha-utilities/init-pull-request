@@ -107,7 +107,7 @@ jobs:
           branch: pr-pages
 
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.0.7
+        uses: gha-utilities/init-pull-request@v0.0.8
         with:
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: pr-pages
@@ -142,7 +142,7 @@ According to OctoKit documentation for [`octokit.pulls.create`](https://octokit.
 
 ```YAML
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.0.7
+        uses: gha-utilities/init-pull-request@v0.0.8
         with:
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: 'your-name:pr-pages'
@@ -162,7 +162,7 @@ To assign a different repository modify the `GITHUB_REPOSITORY` environment vari
 
 ```YAML
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.0.7
+        uses: gha-utilities/init-pull-request@v0.0.8
         env:
           GITHUB_REPOSITORY: maintainer/repo-name
         with:
@@ -203,11 +203,16 @@ ___
 
 - [GitHub -- Workflow syntax for GitHub actions](https://help.github.com/en/articles/workflow-syntax-for-github-actions)
 
+- [GitHub -- Action fails quietly due to Unhandled promise rejection](https://github.com/gha-utilities/init-pull-request/issues/5)
+
 - [GitHub Dev -- Create a Pull Request](https://developer.github.com/v3/pulls/#create-a-pull-request)
 
 - [OctoKit -- Create a Pull Request](https://octokit.github.io/rest.js/#octokit-routes-pulls-create)
 
 - [StackOverflow -- GitHub Actions share Workspace Artifacts between jobs](https://stackoverflow.com/questions/57498605)
+
+
+- [StackOverflow -- How to find which promises are unhandled in Node.js UnhandledPromiseRejectionWarning?](https://stackoverflow.com/questions/43834559)
 
 
 ___

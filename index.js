@@ -109,6 +109,30 @@ const title = get_gha_input('title');
 const body = get_gha_input('body');
 
 
+/**
+ * General callback for unhandled promise rejection errors and warnings
+ * @callback unhandled_promise_rejection__callback
+ * @param {Error} err
+ * @param {Promise} _promise
+ * @throws {UnhandledPromiseRejection | UnhandledPromiseRejectionWarning}
+ */
+const unhandled_promise_rejection__callback = (err, _promise) => {
+  setTimeout(() => {
+    if (_promise) {
+      console.error(`Unhandled rejection at: ${_promise}`);
+    }
+
+    console.error(err.mesage);
+    console.dir(err.stack);
+    throw err;
+  });
+};
+
+
+process.on('UnhandledPromiseRejection', unhandled_promise_rejection__callback);
+process.on('UnhandledPromiseRejectionWarning', unhandled_promise_rejection__callback);
+
+
 const response = octokit.pulls.create({
   'title': title,                 // Commit title, generally should be less than 74 characters
   'body': body,                   // Multi-line commit message
