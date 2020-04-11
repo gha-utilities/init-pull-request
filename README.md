@@ -107,7 +107,7 @@ jobs:
           branch: pr-pages
 
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.0.8
+        uses: gha-utilities/init-pull-request@v0.0.9
         with:
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: pr-pages
@@ -142,7 +142,7 @@ According to OctoKit documentation for [`octokit.pulls.create`](https://octokit.
 
 ```YAML
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.0.8
+        uses: gha-utilities/init-pull-request@v0.0.9
         with:
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: 'your-name:pr-pages'
@@ -162,7 +162,7 @@ To assign a different repository modify the `GITHUB_REPOSITORY` environment vari
 
 ```YAML
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.0.8
+        uses: gha-utilities/init-pull-request@v0.0.9
         env:
           GITHUB_REPOSITORY: maintainer/repo-name
         with:
@@ -211,8 +211,11 @@ ___
 
 - [StackOverflow -- GitHub Actions share Workspace Artifacts between jobs](https://stackoverflow.com/questions/57498605)
 
-
 - [StackOverflow -- How to find which promises are unhandled in Node.js UnhandledPromiseRejectionWarning?](https://stackoverflow.com/questions/43834559)
+
+- [Medium -- How to prevent your Node.js process from crashing](https://medium.com/dailyjs/how-to-prevent-your-node-js-process-from-crashing-5d40247b8ab2)
+
+- [NodeJS -- `process` Event: `unhandledRejection`](https://nodejs.org/api/process.html#process_event_unhandledrejection)
 
 
 ___

@@ -122,15 +122,27 @@ const unhandled_promise_rejection__callback = (err, _promise) => {
       console.error(`Unhandled rejection at: ${_promise}`);
     }
 
-    console.error(err.mesage);
+    console.error(err.message);
     console.dir(err.stack);
     throw err;
   });
 };
 
 
-process.on('UnhandledPromiseRejection', unhandled_promise_rejection__callback);
-process.on('UnhandledPromiseRejectionWarning', unhandled_promise_rejection__callback);
+/**
+ * General callback to inspect and capture warnings
+ * @callback warning__callback
+ * @param {Error} warning
+ */
+const warning__callback = (warning) => {
+  console.warn(warning.name);
+  console.warn(warning.message);
+  console.warn(warning.stack);
+};
+
+
+process.on('unhandledRejection', unhandled_promise_rejection__callback);
+process.on('warning', warning__callback);
 
 
 const response = octokit.pulls.create({
