@@ -5,7 +5,70 @@ const github = require('@actions/github');
 const process = require('process');
 
 
-const get_gha_input = function(name) { return process.env[`INPUT_${name.toUpperCase()}`]; }
+/**
+ * Get Action Input or Environment variable by name
+ * @param {string} name
+ * @return {string|undefined}
+ * @example
+ * const verbose = get_gha_input('verbose');
+ * if (verbose === 'true') {
+ *   console.log(verbose);
+ *   //> "true"
+ * }
+ */
+const get_gha_input = (name) => {
+  return process.env[`INPUT_${name.toUpperCase()}`];
+};
+
+
+/**
+ * Set Action Output or Environment variable by name to specified value
+ * @param {string} name
+ * @param {string} value
+ * @example
+ * set_gha_output('result') = 'nifty'
+ * console.log(process.env.OUTPUT_RESULT);
+ * //> "nifty"
+ */
+const set_gha_output = (name, value) => {
+  process.env[`OUTPUT_${name.toUpperCase()}`] = value;
+};
+
+
+/**
+ * General callback for unhandled promise rejection errors and warnings
+ * @callback unhandled_promise_rejection__callback
+ * @param {Error} err
+ * @param {Promise} _promise
+ * @throws {UnhandledPromiseRejection | UnhandledPromiseRejectionWarning}
+ */
+const unhandled_promise_rejection__callback = (err, _promise) => {
+  setTimeout(() => {
+    if (_promise) {
+      console.error(`Unhandled rejection at: ${_promise}`);
+    }
+
+    console.error(err.message);
+    console.dir(err.stack);
+    throw err;
+  });
+};
+
+
+/**
+ * General callback to inspect and capture warnings
+ * @callback warning__callback
+ * @param {Error} warning
+ */
+const warning__callback = (warning) => {
+  console.warn(warning.name);
+  console.warn(warning.message);
+  console.warn(warning.stack);
+};
+
+
+process.on('unhandledRejection', unhandled_promise_rejection__callback);
+process.on('warning', warning__callback);
 
 
 const actor = process.env.GITHUB_ACTOR;
@@ -109,43 +172,7 @@ const title = get_gha_input('title');
 const body = get_gha_input('body');
 
 
-/**
- * General callback for unhandled promise rejection errors and warnings
- * @callback unhandled_promise_rejection__callback
- * @param {Error} err
- * @param {Promise} _promise
- * @throws {UnhandledPromiseRejection | UnhandledPromiseRejectionWarning}
- */
-const unhandled_promise_rejection__callback = (err, _promise) => {
-  setTimeout(() => {
-    if (_promise) {
-      console.error(`Unhandled rejection at: ${_promise}`);
-    }
-
-    console.error(err.message);
-    console.dir(err.stack);
-    throw err;
-  });
-};
-
-
-/**
- * General callback to inspect and capture warnings
- * @callback warning__callback
- * @param {Error} warning
- */
-const warning__callback = (warning) => {
-  console.warn(warning.name);
-  console.warn(warning.message);
-  console.warn(warning.stack);
-};
-
-
-process.on('unhandledRejection', unhandled_promise_rejection__callback);
-process.on('warning', warning__callback);
-
-
-const response = octokit.pulls.create({
+octokit.pulls.create({
   'title': title,                 // Commit title, generally should be less than 74 characters
   'body': body,                   // Multi-line commit message
   'owner': actor,                 // Username or Organization with permissions to initialize Pull Request
@@ -161,13 +188,38 @@ const response = octokit.pulls.create({
   ];
   console.error(error_message.join('\n'));
   throw e;
-}).then(function(r) {
-  // console.log(JSON.stringify(r['headers']));
-  // console.log(JSON.stringify(r['data']));
-  console.log(`Rate Limit Remaining -> ${r['headers']['x-ratelimit-remaining']}`);
-  console.log(`Rate Limit Reset -> ${r['headers']['x-ratelimit-reset']}`);
-  console.log(`Pull Request HTML URL -> ${r['data']['html_url']}`);
-  console.log(`Pull Request Number -> ${r['data']['number']}`);
-  console.log(`Pull Request State -> ${r['data']['state']}`);
-  return r;
+}).then((response) => {
+  if (get_gha_input('verbose') ===  true || get_gha_input('verbose') === 'true') {
+    const verbose_results = [
+      `Rate Limit Remaining -> ${response['headers']['x-ratelimit-remaining']}`,
+      `Rate Limit Reset -> ${response['headers']['x-ratelimit-reset']}`,
+      `Pull Request HTML URL -> ${response['data']['html_url']}`,
+      `Pull Request Number -> ${response['data']['number']}`,
+      `Pull Request State -> ${response['data']['state']}`
+    ];
+
+    console.log(verbose_results.join('\n'));
+  }
+
+  if (get_gha_input('debug') === true || get_gha_input('debug') === 'true') {
+    console.log('--- DEBUG START ---');
+    console.log('Response headers...');
+    console.log(JSON.stringify(response['headers']));
+    console.log('Response data...');
+    console.log(JSON.stringify(response['data']));
+    console.log('--- DEBUG END ---');
+  }
+
+  if (response['status'] !== 201) {
+    const error_message = ['Response status was not 201 (created), please check',
+                           '- configurations for your Action',
+                           '- authentication for repository (write permissions)'
+    ];
+
+    throw new Error(error_message.join('\n'));
+  }
+
+  set_gha_output('html_url', response['data']['html_url']);
+  set_gha_output('number', response['data']['number']);
+  // return response;
 });
