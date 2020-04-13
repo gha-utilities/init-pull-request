@@ -109,6 +109,7 @@ jobs:
       - name: Initialize Pull Request
         uses: gha-utilities/init-pull-request@v0.0.9
         with:
+          verbose: true
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: pr-pages
           base: gh-pages
@@ -144,6 +145,7 @@ According to OctoKit documentation for [`octokit.pulls.create`](https://octokit.
       - name: Initialize Pull Request
         uses: gha-utilities/init-pull-request@v0.0.9
         with:
+          verbose: true
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: 'your-name:pr-pages'
           base: gh-pages
@@ -166,6 +168,7 @@ To assign a different repository modify the `GITHUB_REPOSITORY` environment vari
         env:
           GITHUB_REPOSITORY: maintainer/repo-name
         with:
+          verbose: true
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: your-name:pr-pages
           base: gh-pages
