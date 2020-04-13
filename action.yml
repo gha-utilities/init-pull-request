@@ -23,6 +23,22 @@ inputs:
     description: 'Multi-line commit message describing changes'
     required: true
 
+  debug:
+    description: 'When `true`, output response data via `JSON.stringify`'
+    required: false
+
+  verbose:
+    description: 'When `true`, output informative response data'
+    required: false
+
+
+outputs:
+  html_url:
+    description: 'URL that Pull Request may be reviewed at'
+
+  number:
+    description: 'Pull Request number'
+
 
 runs:
   using: 'node12'
