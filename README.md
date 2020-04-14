@@ -107,7 +107,7 @@ jobs:
           branch: pr-pages
 
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.1.0
+        uses: gha-utilities/init-pull-request@v0.1.1
         with:
           verbose: true
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
@@ -143,7 +143,7 @@ According to OctoKit documentation for [`octokit.pulls.create`](https://octokit.
 
 ```YAML
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.1.0
+        uses: gha-utilities/init-pull-request@v0.1.1
         with:
           verbose: true
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
@@ -164,11 +164,37 @@ To assign a different repository modify the `GITHUB_REPOSITORY` environment vari
 
 ```YAML
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.1.0
+        uses: gha-utilities/init-pull-request@v0.1.1
         env:
           GITHUB_REPOSITORY: maintainer/repo-name
         with:
           verbose: true
+          pull_request_token: ${{ secrets.GITHUB_TOKEN }}
+          head: your-name:pr-pages
+          base: gh-pages
+          title: 'Updates site files from latest Actions build'
+          body: >
+            Perhaps a multi-line description
+            about latest features and such.
+```
+
+
+------
+
+
+Inputs marked _`[Experimental]`_ within `action.yaml` file (such as `maintainer_can_modify` and `draft`) when defined may cause issues, thus it is a good idea to also define `debug: true` when testing, eg...
+
+
+```YAML
+      - name: Initialize Pull Request
+        uses: gha-utilities/init-pull-request@v0.1.1
+        env:
+          GITHUB_REPOSITORY: maintainer/repo-name
+        with:
+          verbose: true
+          debug: true
+          draft: false
+          maintainer_can_modify: true
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
           head: your-name:pr-pages
           base: gh-pages
@@ -207,6 +233,8 @@ ___
 - [GitHub -- Workflow syntax for GitHub actions](https://help.github.com/en/articles/workflow-syntax-for-github-actions)
 
 - [GitHub -- Action fails quietly due to Unhandled promise rejection](https://github.com/gha-utilities/init-pull-request/issues/5)
+
+- [GitHub -- `actions/typescript-action`](https://github.com/actions/typescript-action)
 
 - [GitHub Dev -- Create a Pull Request](https://developer.github.com/v3/pulls/#create-a-pull-request)
 
