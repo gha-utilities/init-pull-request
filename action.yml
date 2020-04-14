@@ -23,8 +23,16 @@ inputs:
     description: 'Multi-line commit message describing changes'
     required: true
 
+  maintainer_can_modify:
+    description: 'When `undefined`, defaults to assuming `true`'
+    required: false
+
+  draft:
+    description: '[Experimental] When `true`, no notifications are generated'
+    required: false
+
   debug:
-    description: 'When `true`, output response data via `JSON.stringify`'
+    description: '[Experimental] When `true`, output response data via `JSON.stringify`'
     required: false
 
   verbose:

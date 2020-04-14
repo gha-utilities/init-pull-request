@@ -8,7 +8,8 @@ const process = require('process');
 /**
  * Get Action Input or Environment variable by name
  * @param {string} name
- * @return {string|undefined}
+ * @param {boolean} coerce_types
+ * @return {string|any}
  * @example
  * const verbose = get_gha_input('verbose');
  * if (verbose === 'true') {
@@ -16,8 +17,15 @@ const process = require('process');
  *   //> "true"
  * }
  */
-const get_gha_input = (name) => {
-  return process.env[`INPUT_${name.toUpperCase()}`];
+const get_gha_input = (name, coerce_types = false) => {
+  const value = process.env[`INPUT_${name.toUpperCase()}`];
+  if (coerce_types === true) {
+    if (value === "undefined" || value === undefined) {
+      return undefined;
+    }
+    return JSON.parse(value);
+  }
+  return value;
 };
 
 
@@ -172,6 +180,18 @@ const title = get_gha_input('title');
 const body = get_gha_input('body');
 
 
+let maintainer_can_modify = get_gha_input('maintainer_can_modify', true);
+if (maintainer_can_modify === undefined) {
+  // Assume that maintainers do want the option to modify Pull Requests
+  maintainer_can_modify = true;
+}
+
+let draft = get_gha_input('draft', true);
+if (draft === undefined) {
+  draft = false;
+}
+
+
 octokit.pulls.create({
   'title': title,                 // Commit title, generally should be less than 74 characters
   'body': body,                   // Multi-line commit message
@@ -179,8 +199,8 @@ octokit.pulls.create({
   'repo': repo,                   // GitHub repository link or hash eg. `fancy-project`
   'head': head,                   // Where changes are implemented, eg. `your-name:feature-branch`
   'base': base,                   // Branch name where changes should be incorporated, eg. `master`
-  'maintainer_can_modify': true,  // Not about to assume that maintainers do not want the option to modify
-  'draft': false,                 // If `true` no notifications would be generated
+  'maintainer_can_modify': maintainer_can_modify,
+  'draft': draft,                 // When `true`, no notifications are generated
 }).catch((e) => {
   const error_message = ['Failed to initialize Pull Request',
                          ...error_message__base,
