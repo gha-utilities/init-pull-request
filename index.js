@@ -201,13 +201,6 @@ octokit.pulls.create({
   'base': base,                   // Branch name where changes should be incorporated, eg. `master`
   'maintainer_can_modify': maintainer_can_modify,
   'draft': draft,                 // When `true`, no notifications are generated
-}).catch((e) => {
-  const error_message = ['Failed to initialize Pull Request',
-                         ...error_message__base,
-                         ...gha_example,
-  ];
-  console.error(error_message.join('\n'));
-  throw e;
 }).then((response) => {
   if (get_gha_input('verbose') ===  true || get_gha_input('verbose') === 'true') {
     const verbose_results = [
@@ -242,4 +235,11 @@ octokit.pulls.create({
   set_gha_output('html_url', response['data']['html_url']);
   set_gha_output('number', response['data']['number']);
   // return response;
+}).catch((e) => {
+  const error_message = ['Failed to initialize Pull Request',
+                         ...error_message__base,
+                         ...gha_example,
+  ];
+  console.error(error_message.join('\n'));
+  throw e;
 });
