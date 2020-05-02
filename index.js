@@ -57,16 +57,16 @@ const get_gha_input = (name, coerce_types = false) => {
     return value;
 };
 /**
- * Set Action Output or Environment variable by name to specified value
+ * Set Action Output or Environment variable by name to `JSON.stringify(value)`
  * @param {string} name
- * @param {string} value
+ * @param {any} value
  * @example
  * set_gha_output('result') = 'nifty'
  * console.log(process.env.OUTPUT_RESULT);
  * //> "nifty"
  */
 const set_gha_output = (name, value) => {
-    process_1.default.env[`OUTPUT_${name.toUpperCase()}`] = value;
+    process_1.default.env[`OUTPUT_${name.toUpperCase()}`] = JSON.stringify(value);
 };
 /**
  * General callback for unhandled promise rejection errors and warnings
@@ -183,6 +183,9 @@ let draft = get_gha_input('draft', true);
 if (draft === undefined) {
     draft = false;
 }
+/**
+ * @throws {Error}
+ */
 octokit.pulls.create({
     'title': title,
     'body': body,

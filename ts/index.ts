@@ -21,7 +21,7 @@ import process from 'process';
  * coerce('{"key": "value"}');
  * //> {key: "value"}
  */
-const coerce = (value) => {
+const coerce = (value: any): any => {
   try {
     return JSON.parse(value);
   } catch (e) {
@@ -50,7 +50,7 @@ const coerce = (value) => {
  *   //> "true"
  * }
  */
-const get_gha_input = (name, coerce_types = false) => {
+const get_gha_input = (name: string, coerce_types: boolean = false): string | any => {
   const value = process.env[`INPUT_${name.toUpperCase()}`];
   if (coerce_types === true) {
     return coerce(value);
@@ -60,16 +60,16 @@ const get_gha_input = (name, coerce_types = false) => {
 
 
 /**
- * Set Action Output or Environment variable by name to specified value
+ * Set Action Output or Environment variable by name to `JSON.stringify(value)`
  * @param {string} name
- * @param {string} value
+ * @param {any} value
  * @example
  * set_gha_output('result') = 'nifty'
  * console.log(process.env.OUTPUT_RESULT);
  * //> "nifty"
  */
-const set_gha_output = (name, value) => {
-  process.env[`OUTPUT_${name.toUpperCase()}`] = value;
+const set_gha_output = (name: string, value: any) => {
+  process.env[`OUTPUT_${name.toUpperCase()}`] = JSON.stringify(value);
 };
 
 
@@ -80,7 +80,7 @@ const set_gha_output = (name, value) => {
  * @param {Promise} _promise
  * @throws {UnhandledPromiseRejection | UnhandledPromiseRejectionWarning}
  */
-const unhandled_promise_rejection__callback = (err, _promise) => {
+const unhandled_promise_rejection__callback = (err: Error, _promise: Promise<any>) => {
   setTimeout(() => {
     if (_promise) {
       console.error(`Unhandled rejection at: ${_promise}`);
@@ -98,7 +98,7 @@ const unhandled_promise_rejection__callback = (err, _promise) => {
  * @callback warning__callback
  * @param {Error} warning
  */
-const warning__callback = (warning) => {
+const warning__callback = (warning: Error) => {
   console.warn(warning.name);
   console.warn(warning.message);
   console.warn(warning.stack);
@@ -109,12 +109,12 @@ process.on('unhandledRejection', unhandled_promise_rejection__callback);
 process.on('warning', warning__callback);
 
 
-const actor = process.env.GITHUB_ACTOR;
-const repo = process.env.GITHUB_REPOSITORY.split('/')[1];
+const actor: string = process.env.GITHUB_ACTOR;
+const repo: string = process.env.GITHUB_REPOSITORY.split('/')[1];
 
 
 if (actor === undefined || repo === undefined) {
-  const error_message = [
+  const error_message: string[] = [
     'Environment variable `GITHUB_ACTOR` or `GITHUB_REPOSITORY` is undefined',
     'Please ensure that you are testing with something like...',
     '  GITHUB_ACTOR=your-name node index.js',
@@ -130,11 +130,11 @@ if (actor === undefined || repo === undefined) {
 }
 
 
-const error_message__base = [
+const error_message__base: string[] = [
   'Please check that your Workflow file looks similar to...',
 ];
 
-const gha_example = [
+const gha_example: string[] = [
   '  - name: Initialize Pull Request',
   '    uses: gha-utilities/init-pull-request',
   '    with:',
@@ -222,6 +222,9 @@ if (draft === undefined) {
 }
 
 
+/**
+ * @throws {Error}
+ */
 octokit.pulls.create({
   'title': title,                 // Commit title, generally should be less than 74 characters
   'body': body,                   // Multi-line commit message
@@ -265,7 +268,7 @@ octokit.pulls.create({
   set_gha_output('html_url', response['data']['html_url']);
   set_gha_output('number', response['data']['number']);
   // return response;
-}).catch((e) => {
+}).catch((e: Error) => {
   const error_message = ['Failed to initialize Pull Request',
                          ...error_message__base,
                          ...gha_example,
