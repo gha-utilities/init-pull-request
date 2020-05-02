@@ -6,6 +6,39 @@ import process from 'process';
 
 
 /**
+ * Coerces values into JavaScript object types
+ * @function coerce
+ * @param {any} value
+ * @returns {any}
+ * @throws {!SyntaxError}
+ * @example
+ * coerce('1');
+ * //> 1
+ *
+ * coerce('stringy');
+ * //> "stringy"
+ *
+ * coerce('{"key": "value"}');
+ * //> {key: "value"}
+ */
+const coerce = (value) => {
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    if (!(e instanceof SyntaxError)) {
+      throw e;
+    }
+
+    if (['undefined', undefined].includes(value)) {
+      return undefined;
+    } else {
+      return value;
+    }
+  }
+};
+
+
+/**
  * Get Action Input or Environment variable by name
  * @param {string} name
  * @param {boolean} coerce_types
@@ -20,10 +53,7 @@ import process from 'process';
 const get_gha_input = (name, coerce_types = false) => {
   const value = process.env[`INPUT_${name.toUpperCase()}`];
   if (coerce_types === true) {
-    if (value === "undefined" || value === undefined) {
-      return undefined;
-    }
-    return JSON.parse(value);
+    return coerce(value);
   }
   return value;
 };
