@@ -1,8 +1,8 @@
 'use strict';
 
 
-const github = require('@actions/github');
-const process = require('process');
+import github from '@actions/github';
+import process from 'process';
 
 
 /**
