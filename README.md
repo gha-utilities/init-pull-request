@@ -66,7 +66,7 @@ jobs:
 
     steps:
       - name: Checkout source branch for building Pages
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         with:
           ref: src-pages
           fetch-depth: 10
@@ -75,14 +75,14 @@ jobs:
         run: mkdir -vp ~/www/repository-name
 
       - name: Jekyll Build
-        uses: gha-utilities/jekyll-build@v0.0.1
+        uses: gha-utilities/jekyll-build@v0.0.4
         with:
           jekyll_github_token: ${{ secrets.JEKYLL_GITHUB_TOKEN }}
           source: ./
           destination: ~/www/repository-name
 
       - name: Checkout branch for Pull Requesting to GitHub Pages
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         with:
           ref: pr-pages
           fetch-depth: 1
