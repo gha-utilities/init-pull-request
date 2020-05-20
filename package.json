@@ -1,6 +1,6 @@
 {
   "name": "init-pull-request",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "JavaScript wrapper for GitHub Actions, runs `octokit.pulls.create` with provided Inputs",
   "main": "index.js",
   "scripts": {
