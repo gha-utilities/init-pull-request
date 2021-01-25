@@ -1,5 +1,6 @@
 node_modules/typescript
 **/node_modules/@types
 node_modules/**/*.ts
+node_modules/@octokit/types/*
 **DS_Store
 *.swp
