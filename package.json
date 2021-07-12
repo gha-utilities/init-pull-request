@@ -26,7 +26,7 @@
     "@actions/github": "^5.0.0"
   },
   "devDependencies": {
-    "@octokit/types": "^6.16.2",
+    "@octokit/types": "^6.18.1",
     "@types/node": "^15.12.0",
     "typescript": "^4.3.5"
   }
