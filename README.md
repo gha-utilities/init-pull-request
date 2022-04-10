@@ -42,7 +42,7 @@ JavaScript wrapper for `octokit.pulls.create` with provided GitHub Actions Input
 Access to GitHub Actions if using on GitHub, or manually assigning environment variables prior to running `npm test`.
 
 
-___
+______
 
 
 ## Quick Start
@@ -120,7 +120,7 @@ jobs:
 ```
 
 
-___
+______
 
 
 ## Notes
@@ -211,7 +211,7 @@ Inputs marked _`[Experimental]`_ within `action.yaml` file (such as `maintainer_
 This repository may not be feature complete, or fully operational, Pull Requests are most welcomed ;-)
 
 
-___
+______
 
 
 ## Attribution
@@ -249,7 +249,7 @@ ___
 - [NodeJS -- `process` Event: `unhandledRejection`](https://nodejs.org/api/process.html#process_event_unhandledrejection)
 
 
-___
+______
 
 
 ## License
