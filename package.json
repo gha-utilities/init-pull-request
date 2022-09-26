@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/gha-utilities/init-pull-request#readme",
   "dependencies": {
-    "@actions/github": "^5.0.1"
+    "@actions/github": "^5.1.0"
   },
   "devDependencies": {
     "@octokit/types": "^6.34.0",
