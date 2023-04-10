@@ -28,6 +28,6 @@
   "devDependencies": {
     "@octokit/types": "^9.0.0",
     "@types/node": "^18.15.7",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.4"
   }
 }
