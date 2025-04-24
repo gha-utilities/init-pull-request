@@ -107,7 +107,7 @@ jobs:
           branch: pr-pages
 
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.4.0
+        uses: gha-utilities/init-pull-request@v0.4.1
         with:
           verbose: true
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
@@ -143,7 +143,7 @@ According to OctoKit documentation for [`octokit.pulls.create`](https://octokit.
 
 ```YAML
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.4.0
+        uses: gha-utilities/init-pull-request@v0.4.1
         with:
           verbose: true
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
@@ -164,7 +164,7 @@ To assign a different repository modify the `GITHUB_REPOSITORY` environment vari
 
 ```YAML
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.4.0
+        uses: gha-utilities/init-pull-request@v0.4.1
         env:
           GITHUB_REPOSITORY: maintainer/repo-name
         with:
@@ -187,7 +187,7 @@ Inputs marked _`[Experimental]`_ within `action.yaml` file (such as `maintainer_
 
 ```YAML
       - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.4.0
+        uses: gha-utilities/init-pull-request@v0.4.1
         env:
           GITHUB_REPOSITORY: maintainer/repo-name
         with:
@@ -263,7 +263,7 @@ Legal bits of Open Source software. Note the following license does **not** nece
 
 ```
 Initialize Pull Request GitHub Actions documentation
-Copyright (C) 2023  S0AndS0
+Copyright (C) 2025  S0AndS0
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
